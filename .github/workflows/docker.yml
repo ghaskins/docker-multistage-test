@@ -36,14 +36,26 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=raw,value=latest,enable={{is_default_branch}}
+
     - name: Build and push Docker image
       uses: ghaskins/docker-multistage-action@dev
       with:
         context: .
         push: ${{ github.event_name != 'pull_request' }}
         image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: ${{ steps.meta.outputs.tags }}
         stages: foo,bar
-        tags: v1.0,v1.0.0
         platforms: linux/amd64,linux/arm64
 
 #    - name: Generate artifact attestation
