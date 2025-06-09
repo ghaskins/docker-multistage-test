@@ -37,12 +37,14 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build and push Docker image
-      uses: ghaskins/docker-multistage-action@v1
+      uses: ghaskins/docker-multistage-action@dev
       with:
         context: .
-        platforms: linux/amd64,linux/arm64
         push: ${{ github.event_name != 'pull_request' }}
         image: ${{ github.repository }}
+        stages: foo,bar
+        tags: v1.0,v1.0.0
+        platforms: linux/amd64,linux/arm64
 
 #    - name: Generate artifact attestation
 #      uses: actions/attest-build-provenance@v2
