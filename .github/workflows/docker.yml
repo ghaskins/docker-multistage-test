@@ -49,7 +49,7 @@ jobs:
           type=raw,value=latest,enable={{is_default_branch}}
 
     - name: Build and push Docker image
-      uses: ghaskins/docker-multistage-action@dev
+      uses: manetu/docker-multistage-action@v1
       with:
         context: .
         push: ${{ github.event_name != 'pull_request' }}
