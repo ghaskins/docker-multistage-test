@@ -37,7 +37,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build and push Docker image
-      uses: ghaskins/docker-multistage@v1
+      uses: ghaskins/docker-multistage-action@v1
       with:
         context: .
         platforms: linux/amd64,linux/arm64
